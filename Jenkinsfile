@@ -35,25 +35,24 @@ pipeline {
         }
         stage('Build') {
             steps {
-                //script{
-                //    ssh"""
-                    echo "PROJECT ID : ${PROJECT_ID}"
-                    echo "CLUSTER_NAME : ${CLUSTER_NAME}"
-                    echo "ZONE : ${ZONE}"
-                    //ls -la
+                script{
+                   ssh"""
                     echo "docker build -t seednakab/nodejs-postgres:test${VERSION} ."
                     echo "docker push seednakab/nodejs-postgres:test${VERSION}"
-                //    """
-                //}
+                   """
+                }
             }
         }
         stage('Deploy') {
             steps {
-                dir("deployment"){
-                echo "git clone -b ${branch} https://github.com/jarwat/nodejs_postgressql_deployment.git"
-                echo "gcloud container clusters get-credentials $CLUSTER_NAME --zone $ZONE --project $PROJECT_ID"
-                echo ""
-                echo "kubectl apply -f deployment_nodejs.yml"
+                script{
+                   ssh"""
+                    dir("deployment"){
+                    echo "git clone -b ${branch} https://github.com/jarwat/nodejs_postgressql_deployment.git"
+                    echo "gcloud container clusters get-credentials $CLUSTER_NAME --zone $ZONE --project $PROJECT_ID"
+                    echo ""
+                    echo "kubectl apply -f deployment_nodejs.yml"
+                    """
                 }
             }
         }
@@ -68,13 +67,6 @@ pipeline {
         stage('create LB') {
             steps {
                 echo "pod_name=\$(kubectl get pods -o=name | grep ${environment} | awk -F'/' '{print \$2}')" 
-                //example
-                script {
-                    sh"""
-                    pod_name = "nodejs-staging-67d8fcb6-npwr9"
-                    """
-                }
-                //
                 echo "gcloud container clusters get-credentials $CLUSTER_NAME --zone $ZONE --project $PROJECT_ID"
                 echo "kubectl expose pod ${pod_name} --type=LoadBalancer --port=${port} --target-port=8080"
             }
