@@ -22,27 +22,21 @@ pipeline {
                 //}
             }
         }
-        stage('Test') {
+        stage('Deploy') {
             steps {
-                script{
-                // Your test steps here
-                    ssh"""
-                    echo "test"
-                    """
+                dir(deployment){
+                echo "gcloud container clusters get-credentials $CLUSTER_NAME --zone $ZONE --project $PROJECT_ID"
+                echo "kubectl apply deployment_nodejs.yml"
                 }
             }
         }
-        // stage('Deploy') {
-        //     steps {
-        //         script {
-        //             docker.build('your-image-name')
-        //             docker.withRegistry('https://gcr.io', 'gcr-credentials') {
-        //                 docker.image('your-image-name').push('latest')
-        //             }
-        //             sh "gcloud container clusters get-credentials $CLUSTER_NAME --zone $ZONE --project $PROJECT_ID"
-        //             sh "kubectl set image deployment/your-deployment-name your-container-name=gcr.io/$PROJECT_ID/your-image-name:latest"
-        //         }
-        //     }
-        // }
+        stage('hpa') {
+            steps {
+                dir(deployment){
+                echo "gcloud container clusters get-credentials $CLUSTER_NAME --zone $ZONE --project $PROJECT_ID"
+                echo "kubectl apply hpa.yml"
+                }
+            }
+        }
     }
 }
