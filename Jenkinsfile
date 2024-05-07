@@ -8,30 +8,31 @@ pipeline {
         branch = "${env.BRANCH_NAME}"
         VERSION = "${BUILD_NUMBER}"
     }
-    stage('Prepare param') {
-        steps {
-            //script{
-            //    ssh"""
-                echo "PROJECT ID : ${PROJECT_ID}"
-                echo "CLUSTER_NAME : ${CLUSTER_NAME}"
-                echo "ZONE : ${ZONE}"
-                script{
-                    if ("${branch}" == "master"){
-                        port = '3000'
-                        environment = 'production'
-                    } else{
-                        port = '4000'
-                        environment = 'staging'
-                    }
-                }
-                //ls -la
-                echo "environment : ${environment}"
-                echo "port : ${port}"
-            //    """
-            //}
-        }
-    }
     stages {
+        stage('Prepare param') {
+            steps {
+                //script{
+                //    ssh"""
+
+                    script{
+                        if ("${branch}" == "master"){
+                            port = '3000'
+                            environment = 'production'
+                        } else{
+                            port = '4000'
+                            environment = 'staging'
+                        }
+                    }
+                    //ls -la
+                    echo "PROJECT ID : ${PROJECT_ID}"
+                    echo "CLUSTER_NAME : ${CLUSTER_NAME}"
+                    echo "ZONE : ${ZONE}"
+                    echo "environment : ${environment}"
+                    echo "port : ${port}"
+                //    """
+                //}
+            }
+        }
         stage('Build') {
             steps {
                 //script{
