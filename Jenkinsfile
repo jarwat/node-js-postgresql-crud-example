@@ -68,7 +68,7 @@ pipeline {
             steps {
                 script {
                     sh"""
-                    echo "pod_name=\$(kubectl get pods -o=name | grep ${environment} | awk -F'/' '{print \$2}')" 
+                    #echo "pod_name=\$(kubectl get pods -o=name | grep ${environment} | awk -F'/' '{print \$2}')" 
                     echo "gcloud container clusters get-credentials $CLUSTER_NAME --zone $ZONE --project $PROJECT_ID"
                     #example
                     echo "kubectl expose pod nodejs-prod-5c8fdd9666-kx92n --type=LoadBalancer --port=${port} --target-port=8080"
