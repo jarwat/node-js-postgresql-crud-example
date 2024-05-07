@@ -24,7 +24,7 @@ pipeline {
         }
         stage('Deploy') {
             steps {
-                dir(deployment){
+                dir("deployment"){
                 echo "gcloud container clusters get-credentials $CLUSTER_NAME --zone $ZONE --project $PROJECT_ID"
                 echo "kubectl apply deployment_nodejs.yml"
                 }
@@ -32,7 +32,7 @@ pipeline {
         }
         stage('hpa') {
             steps {
-                dir(deployment){
+                dir("deployment"){
                 echo "gcloud container clusters get-credentials $CLUSTER_NAME --zone $ZONE --project $PROJECT_ID"
                 echo "kubectl apply hpa.yml"
                 }
