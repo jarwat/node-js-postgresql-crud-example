@@ -24,7 +24,9 @@ pipeline {
         }
         stage('Test') {
             steps {
+                script{
                 // Your test steps here
+                }
             }
         }
         // stage('Deploy') {
