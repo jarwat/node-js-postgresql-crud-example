@@ -10,16 +10,16 @@ pipeline {
     stages {
         stage('Build') {
             steps {
-                script{
-                    ssh"""
+                //script{
+                //    ssh"""
                     echo "PROJECT ID : ${PROJECT_ID}"
                     echo "CLUSTER_NAME : ${CLUSTER_NAME}"
                     echo "ZONE : ${ZONE}"
-                    ls -la
+                    //ls -la
                     echo "docker build -t seednakab/nodejs-postgres:test${BUILD_NUMBER} ."
                     echo "docker push seednakab/nodejs-postgres:test${BUILD_NUMBER}"
-                    """
-                }
+                //    """
+                //}
             }
         }
         stage('Test') {
