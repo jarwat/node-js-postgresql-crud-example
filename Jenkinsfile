@@ -5,6 +5,7 @@ pipeline {
         PROJECT_ID = 'molten-catalyst-422309-d9'
         CLUSTER_NAME = 'seedtest'
         ZONE = 'us-central1'
+        branch = "${env.BRANCH_NAME}"
     }
 
     stages {
@@ -25,8 +26,9 @@ pipeline {
         stage('Deploy') {
             steps {
                 dir("deployment"){
+                echo "git clone -b ${branch} https://github.com/jarwat/nodejs_postgressql_deployment.git"
                 echo "gcloud container clusters get-credentials $CLUSTER_NAME --zone $ZONE --project $PROJECT_ID"
-                echo "kubectl apply deployment_nodejs.yml"
+                echo "kubectl apply -f deployment_nodejs.yml"
                 }
             }
         }
@@ -34,7 +36,7 @@ pipeline {
             steps {
                 dir("deployment"){
                 echo "gcloud container clusters get-credentials $CLUSTER_NAME --zone $ZONE --project $PROJECT_ID"
-                echo "kubectl apply hpa.yml"
+                echo "kubectl apply -f hpa.yml"
                 }
             }
         }
