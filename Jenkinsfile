@@ -26,6 +26,9 @@ pipeline {
             steps {
                 script{
                 // Your test steps here
+                    ssh"""
+                    echo "test"
+                    """
                 }
             }
         }
