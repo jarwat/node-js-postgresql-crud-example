@@ -67,7 +67,7 @@ pipeline {
         }
         stage('create LB') {
             steps {
-                echo "pod_name=$(kubectl get pods -o=name | grep ${environment} | awk -F'/' '{print $2}')" 
+                echo "pod_name=$(kubectl get pods -o=name | grep ${environment} | awk -F'/' '{print \$2}')" 
                 echo "gcloud container clusters get-credentials $CLUSTER_NAME --zone $ZONE --project $PROJECT_ID"
                 echo "kubectl expose pod ${pod_name} --type=LoadBalancer --port=${port} --target-port=8080"
             }
