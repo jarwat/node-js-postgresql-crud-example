@@ -6,6 +6,7 @@ pipeline {
         CLUSTER_NAME = 'seedtest'
         ZONE = 'us-central1'
         branch = "${env.BRANCH_NAME}"
+        VERSION = "${BUILD_NUMBER}"
     }
 
     stages {
@@ -17,8 +18,8 @@ pipeline {
                     echo "CLUSTER_NAME : ${CLUSTER_NAME}"
                     echo "ZONE : ${ZONE}"
                     //ls -la
-                    echo "docker build -t seednakab/nodejs-postgres:test${BUILD_NUMBER} ."
-                    echo "docker push seednakab/nodejs-postgres:test${BUILD_NUMBER}"
+                    echo "docker build -t seednakab/nodejs-postgres:test${VERSION} ."
+                    echo "docker push seednakab/nodejs-postgres:test${VERSION}"
                 //    """
                 //}
             }
